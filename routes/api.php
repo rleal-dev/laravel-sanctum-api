@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->middleware('json.response')->group(function () {
+    Route::post('register', Controllers\Auth\RegisterController::class);
+    Route::post('login', Controllers\Auth\LoginController::class);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::delete('logout', Controllers\Auth\LogoutController::class);
+
+        Route::get('profile', Controllers\ProfileController::class);
+    });
 });
