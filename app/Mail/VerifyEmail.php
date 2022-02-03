@@ -36,7 +36,7 @@ class VerifyEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Reset Password')
-            ->markdown('emails.password');
+        return $this->subject('Email Verification')
+            ->markdown('emails.verify');
     }
 }
