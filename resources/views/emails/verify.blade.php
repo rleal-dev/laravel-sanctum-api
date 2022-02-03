@@ -2,7 +2,7 @@
 # Email Verification
 
 Thank you for signing up.
-Your six-digit code is {{ $pin }}
+Your six-digit code is <strong>{{ $pin }}</strong>
 
 Thanks,<br>
 {{ config('app.name') }}

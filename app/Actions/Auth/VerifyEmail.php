@@ -12,9 +12,9 @@ class VerifyEmail
      *
      * @param mixed $request
      *
-     * @return string
+     * @return boolean
      */
-    public function execute($request): string
+    public function execute($request): bool
     {
         return DB::transaction(function () use ($request) {
             $token = PasswordReset::firstWhere('token', $request->token);

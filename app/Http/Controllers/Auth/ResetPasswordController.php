@@ -27,7 +27,7 @@ class ResetPasswordController extends BaseController
             return $this->responseError('Error on send password reset token!');
         }
 
-        return $this->responseOk('Password token sent successfully!');
+        return $this->responseOk('Password reset token sent successfully!');
     }
 
     /**
@@ -41,13 +41,17 @@ class ResetPasswordController extends BaseController
     public function reset(ResetPasswordRequest $request, ResetPassword $action)
     {
         try {
-            $action->execute($request);
+            $response = $action->execute($request);
         } catch (Throwable $exception) {
             throw_if(is_development(), $exception);
 
             return $this->responseError('Error on send password reset token!');
         }
 
-        return $this->responseOk('Password token sent successfully!');
+        if (! $response) {
+            return $this->responseNotFound('Token not exists or expired!');
+        }
+
+        return $this->responseOk('Password reseted successfully!');
     }
 }
