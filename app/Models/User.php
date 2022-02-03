@@ -42,4 +42,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => Password::class,
     ];
+
+    /**
+     * Generate PIN token
+     *
+     * @return string
+     */
+    public function generatePin(): string
+    {
+        $pin = rand(100000, 999999);
+
+        PasswordReset::create([
+            'email' => $this->email,
+            'token' => $pin,
+            'created_at' => now(),
+        ]);
+
+        return $pin;
+    }
 }

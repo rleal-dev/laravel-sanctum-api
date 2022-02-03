@@ -15,10 +15,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('v1')->middleware('json.response')->group(function () {
-    Route::post('register', Controllers\Auth\RegisterController::class);
+    Route::post('register', [Controllers\Auth\RegisterController::class, 'register']);
+    Route::post('verify-email', [Controllers\Auth\RegisterController::class, 'verifyEmail']);
+    Route::post('resend-token', [Controllers\Auth\RegisterController::class, 'resendToken']);
+
     Route::post('login', Controllers\Auth\LoginController::class);
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::post('password/token', [Controllers\Auth\ResetPasswordController::class, 'token']);
+    Route::post('password/reset', [Controllers\Auth\ResetPasswordController::class, 'reset']);
+
+    Route::middleware(['auth:sanctum', 'email.verified'])->group(function () {
         Route::delete('logout', Controllers\Auth\LogoutController::class);
 
         Route::get('profile', Controllers\ProfileController::class);

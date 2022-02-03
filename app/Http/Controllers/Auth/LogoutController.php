@@ -10,7 +10,7 @@ use Throwable;
 class LogoutController extends BaseController
 {
     /**
-     * Perform user logout
+     * Perform user logout.
      *
      * @param LogoutRequest  $request
      * @param Logout  $action

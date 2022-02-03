@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
 
         // Custom Middlewares
         'json.response' => \App\Http\Middleware\ForceJsonResponse::class,
+        'email.verified' => \App\Http\Middleware\VerifyEmail::class,
     ];
 }

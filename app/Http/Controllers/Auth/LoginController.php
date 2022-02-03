@@ -11,7 +11,7 @@ use Throwable;
 class LoginController extends BaseController
 {
     /**
-     * Perform user login
+     * Perform user login.
      *
      * @param LoginRequest  $request
      * @param Login  $action

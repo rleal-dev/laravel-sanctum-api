@@ -3,29 +3,29 @@
 namespace App\Actions\Auth;
 
 use App\Mail\VerifyEmail;
-use App\Models\User;
+use App\Models\{PasswordReset, User};
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
-class Register
+class ResendToken
 {
     /**
      * Create user account.
      *
      * @param mixed $request
      *
-     * @return string
+     * @return void
      */
-    public function execute($request): string
+    public function execute($request): void
     {
-        return DB::transaction(function () use ($request) {
-            $user = User::create($request->validated());
+        DB::transaction(function () use ($request) {
+            PasswordReset::whereEmail($request->email)->delete();
+
+            $user = User::firstWhere('email', $request->email);
 
             Mail::to($request->email)->send(
                 new VerifyEmail($user->generatePin())
             );
-
-            return $user->createToken('auth_token')->plainTextToken;
         });
     }
 }

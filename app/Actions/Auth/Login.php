@@ -11,7 +11,7 @@ class Login
      *
      * @return string
      */
-    public function execute($request): String
+    public function execute($request): string
     {
         $credentials = $request->validated();
 
