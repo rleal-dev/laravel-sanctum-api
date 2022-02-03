@@ -13,9 +13,6 @@ class ProfileController extends BaseController
      */
     public function __invoke()
     {
-        return $this->responseOk(
-            'User Profile response successfully',
-            new ProfileResource($this->user())
-        );
+        return new ProfileResource($this->user());
     }
 }

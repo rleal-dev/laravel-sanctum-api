@@ -28,5 +28,9 @@ Route::prefix('v1')->middleware('json.response')->group(function () {
         Route::delete('logout', Controllers\Auth\LogoutController::class);
 
         Route::get('profile', Controllers\ProfileController::class);
+
+        Route::apiResources([
+            'users' => Controllers\UserController::class,
+        ]);
     });
 });
