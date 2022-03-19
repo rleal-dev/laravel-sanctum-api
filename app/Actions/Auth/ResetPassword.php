@@ -2,19 +2,20 @@
 
 namespace App\Actions\Auth;
 
-use App\Models\{PasswordReset, User};
 use Illuminate\Support\Facades\DB;
+use App\Models\{PasswordReset, User};
+use App\Http\Requests\Auth\ResetPasswordRequest;
 
 class ResetPassword
 {
     /**
      * Reset the user password.
      *
-     * @param mixed $request
+     * @param ResetPasswordRequest $request
      *
-     * @return boolean
+     * @return bool
      */
-    public function execute($request): bool
+    public function execute(ResetPasswordRequest $request): bool
     {
         return DB::transaction(function () use ($request) {
             $token = PasswordReset::query()

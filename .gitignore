@@ -14,3 +14,5 @@ yarn-error.log
 /.idea
 /.vscode
 .php-cs-fixer.php
+.php-cs-fixer.cache
+csfixer.sh

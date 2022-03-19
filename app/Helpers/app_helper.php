@@ -5,7 +5,7 @@ if (! function_exists('is_development')) {
     /**
      * Checks is development environment.
      *
-     * @return boolean
+     * @return bool
      */
     function is_development()
     {

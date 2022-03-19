@@ -4,19 +4,23 @@ namespace App\Models;
 
 use App\Casts\Password;
 use EloquentFilter\Filterable;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends BaseModel implements AuthenticatableContract
 {
     use HasApiTokens,
+        HasRoles,
         HasFactory,
         Notifiable,
         Filterable,
-        SoftDeletes;
+        SoftDeletes,
+        Authenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -59,23 +63,5 @@ class User extends Authenticatable
     public static function getList($filters)
     {
         return static::filter($filters)->orderBy('name')->paginate();
-    }
-
-    /**
-     * Generate PIN token
-     *
-     * @return string
-     */
-    public function generatePin(): string
-    {
-        $pin = rand(100000, 999999);
-
-        PasswordReset::create([
-            'email' => $this->email,
-            'token' => $pin,
-            'created_at' => now(),
-        ]);
-
-        return $pin;
     }
 }

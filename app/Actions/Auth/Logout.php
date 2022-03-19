@@ -2,18 +2,21 @@
 
 namespace App\Actions\Auth;
 
+use App\Models\Enums\LogoutType;
+use App\Http\Requests\Auth\LogoutRequest;
+
 class Logout
 {
     /**
      * User Logout.
      *
-     * @param mixed $request
+     * @param LogoutRequest $request
      *
-     * @return boolean
+     * @return bool
      */
-    public function execute($request): bool
+    public function execute(LogoutRequest $request): bool
     {
-        if ($request->logout_mode == 'CURRENT_TOKEN') {
+        if ($request->logout_mode == LogoutType::CURRENT_TOKEN) {
             return $request->user()->currentAccessToken()->delete();
         }
 

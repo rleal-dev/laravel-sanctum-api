@@ -2,19 +2,20 @@
 
 namespace App\Actions\Auth;
 
+use App\Http\Requests\Auth\VerifyEmailRequest;
 use App\Models\{PasswordReset, User};
 use Illuminate\Support\Facades\DB;
 
 class VerifyEmail
 {
     /**
-     * Create user account.
+     * Verify user email for activate user.
      *
-     * @param mixed $request
+     * @param VerifyEmailRequest $request
      *
-     * @return boolean
+     * @return bool
      */
-    public function execute($request): bool
+    public function execute(VerifyEmailRequest $request): bool
     {
         return DB::transaction(function () use ($request) {
             $token = PasswordReset::firstWhere('token', $request->token);
