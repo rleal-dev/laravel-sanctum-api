@@ -34,6 +34,7 @@ Route::prefix('v1')->middleware('json.response')->group(function () {
             'roles' => Controllers\RoleController::class,
             'permissions' => Controllers\PermissionController::class,
             'roles.permissions' => Controllers\RolePermissionController::class,
+            'projects' => Controllers\ProjectController::class,
         ]);
     });
 });

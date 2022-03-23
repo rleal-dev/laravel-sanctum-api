@@ -25,7 +25,7 @@ class User extends BaseModel implements AuthenticatableContract
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var string[]
      */
     protected $fillable = [
         'name',
@@ -52,6 +52,16 @@ class User extends BaseModel implements AuthenticatableContract
         'email_verified_at' => 'datetime',
         'password' => Password::class,
     ];
+
+    /**
+     * Relationship with the User model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 
     /**
      * Get the user list.
