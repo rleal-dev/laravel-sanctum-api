@@ -31,6 +31,9 @@ Route::prefix('v1')->middleware('json.response')->group(function () {
 
         Route::apiResources([
             'users' => Controllers\UserController::class,
+            'roles' => Controllers\RoleController::class,
+            'permissions' => Controllers\PermissionController::class,
+            'roles.permissions' => Controllers\RolePermissionController::class,
         ]);
     });
 });

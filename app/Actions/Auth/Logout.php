@@ -2,8 +2,8 @@
 
 namespace App\Actions\Auth;
 
-use App\Models\Enums\LogoutType;
 use App\Http\Requests\Auth\LogoutRequest;
+use App\Models\Enums\LogoutType;
 
 class Logout
 {

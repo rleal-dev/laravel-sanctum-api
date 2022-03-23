@@ -5,7 +5,7 @@ namespace App\Actions\User;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 
-class Create
+class CreateUser
 {
     /**
      * Create a user

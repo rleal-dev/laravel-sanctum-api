@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\{Create, Update};
+use App\Actions\User\{CreateUser, DeleteUser, UpdateUser};
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\{UserCollection, UserResource};
 use App\Models\User;
@@ -29,11 +29,11 @@ class UserController extends BaseController
      * Store a new user.
      *
      * @param UserRequest  $request
-     * @param Create  $action
+     * @param CreateUser  $action
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(UserRequest $request, Create $action)
+    public function store(UserRequest $request, CreateUser $action)
     {
         try {
             $user = $action->execute($request);
@@ -43,7 +43,7 @@ class UserController extends BaseController
             return $this->responseError('Error on create user!');
         }
 
-        return $this->responseCreated(
+        return $this->responseCreateUserd(
             'User created successfully!',
             new UserResource($user)
         );
@@ -66,11 +66,11 @@ class UserController extends BaseController
      *
      * @param UserRequest  $request
      * @param User $user
-     * @param Update  $action
+     * @param UpdateUser  $action
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UserRequest $request, User $user, Update $action)
+    public function update(UserRequest $request, User $user, UpdateUser $action)
     {
         try {
             $action->execute($user, $request);
@@ -90,13 +90,14 @@ class UserController extends BaseController
      * Delete a user.
      *
      * @param User $user
+     * @param DeleteUser $action
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(User $user)
+    public function destroy(User $user, DeleteUser $action)
     {
         try {
-            $user->delete();
+            $action->execute($user);
         } catch (Throwable $exception) {
             throw_if(is_development(), $exception);
 

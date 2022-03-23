@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Actions\Auth\{Register, ResendToken, VerifyEmail};
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Auth\{RegisterRequest, ResendTokenRequest, VerifyEmailRequest};
-use Illuminate\Http\JsonResponse;
 use Throwable;
 
 class RegisterController extends BaseController

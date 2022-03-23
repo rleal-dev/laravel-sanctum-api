@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Role\{Create, Update};
+use App\Actions\Role\{CreateRole, UpdateRole};
 use App\Http\Requests\RoleRequest;
 use App\Http\Resources\{RoleCollection, RoleResource};
 use App\Models\Role;
@@ -29,11 +29,11 @@ class RoleController extends BaseController
      * Store a new role.
      *
      * @param RoleRequest  $request
-     * @param Create  $action
+     * @param CreateRole  $action
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(RoleRequest $request, Create $action)
+    public function store(RoleRequest $request, CreateRole $action)
     {
         try {
             $role = $action->execute($request);
@@ -66,11 +66,11 @@ class RoleController extends BaseController
      *
      * @param RoleRequest  $request
      * @param Role $role
-     * @param Update  $action
+     * @param UpdateRole  $action
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(RoleRequest $request, Role $role, Update $action)
+    public function update(RoleRequest $request, Role $role, UpdateRole $action)
     {
         try {
             $action->execute($role, $request);

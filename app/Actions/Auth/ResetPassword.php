@@ -2,9 +2,9 @@
 
 namespace App\Actions\Auth;
 
-use Illuminate\Support\Facades\DB;
-use App\Models\{PasswordReset, User};
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Models\{PasswordReset, User};
+use Illuminate\Support\Facades\DB;
 
 class ResetPassword
 {

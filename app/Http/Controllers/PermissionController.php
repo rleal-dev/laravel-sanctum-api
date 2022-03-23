@@ -2,110 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Permission\{CreatePermission, UpdatePermission};
 use App\Http\Requests\PermissionRequest;
 use App\Http\Resources\{PermissionCollection, PermissionResource};
 use App\Models\Permission;
-use Illuminate\Http\{Request, Response};
+use Illuminate\Http\Request;
 use Throwable;
 
-class PermissionController extends BaseApiController
+class PermissionController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * Get the permission list.
      *
-     * @OA\Get(
-     *   path="/permissions",
-     *   tags={"Permission"},
-     *   operationId="permissionIndex",
-     *   summary="List of permissions",
-     *   description="List of permissions",
-     *   @OA\Response(response=200, description="Successful Operation"),
-     *   @OA\Response(response=400, description="Bad Request"),
-     *   @OA\Response(response=500, description="Server Error"),
-     *   security={{"passport": {}}},
-     * )
+     * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
-        $permissions = Permission::filter($request->all())
-            ->orderBy('name')
-            ->paginate();
-
-        return new PermissionCollection($permissions);
+        return new PermissionCollection(
+            Permission::getList($request->all())
+        );
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a new permission.
      *
-     * @OA\Post(
-     *   path="/permissions",
-     *   tags={"Permission"},
-     *   operationId="permissionStore",
-     *   summary="Create a new permission",
-     *   description="Create a new permission",
-     *   @OA\RequestBody(
-     *     @OA\MediaType(
-     *       mediaType="application/json",
-     *       @OA\Schema(
-     *         @OA\Property(property="name", type="string"),
-     *         example={
-     *           "name": "Show Profile",
-     *         }
-     *       )
-     *     )
-     *   ),
-     *   @OA\Response(response=201, description="Created Successful"),
-     *   @OA\Response(response=400, description="Bad Request"),
-     *   @OA\Response(response=422, description="Unprocessable Entity"),
-     *   @OA\Response(response=500, description="Server Error"),
-     *   security={{"passport": {}}},
-     * )
-     *
-     * @param  PermissionRequest  $request
+     * @param PermissionRequest  $request
+     * @param CreatePermission  $action
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(PermissionRequest $request)
+    public function store(PermissionRequest $request, CreatePermission $action)
     {
         try {
-            $permission = Permission::create($request->validated());
+            $permission = $action->execute($request);
         } catch (Throwable $exception) {
             throw_if(is_development(), $exception);
 
             return $this->responseError('Error on create permission!');
         }
 
-        return $this->response(
-            'Permission updated successfully!',
-            new PermissionResource($permission),
-            Response::HTTP_CREATED
+        return $this->responseCreated(
+            'Permission created successfully!',
+            new PermissionResource($permission)
         );
     }
 
     /**
-     * Display the specified resource.
+     * Get the permission.
      *
-     * @OA\Get(
-     *   path="/permissions/{id}",
-     *   tags={"Permission"},
-     *   operationId="permissionShow",
-     *   summary="Show permission",
-     *   description="Show permission",
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Permission Id",
-     *     required=true,
-     *     @OA\Schema(type="integer")
-     *   ),
-     *   @OA\Response(response=200, description="Successful Operation"),
-     *   @OA\Response(response=404, description="Resource Not Found"),
-     *   security={{"passport": {}}},
-     * )
-     *
-     * @param \Spatie\Permission\Models\Permission $permission
+     * @param Permission $permission
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -115,84 +62,34 @@ class PermissionController extends BaseApiController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @OA\Put(
-     *   path="/permissions/{id}",
-     *   tags={"Permission"},
-     *   operationId="permissionUpdate",
-     *   summary="Update permission",
-     *   description="Update permission",
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Permission Id",
-     *     required=true,
-     *     @OA\Schema(type="integer")
-     *   ),
-     *   @OA\RequestBody(
-     *     @OA\MediaType(
-     *       mediaType="application/json",
-     *       @OA\Schema(
-     *         @OA\Property(property="name", type="string"),
-     *         example={
-     *           "name": "Update Profile",
-     *          }
-     *        )
-     *     )
-     *   ),
-     *   @OA\Response(response=200, description="Successful Operation"),
-     *   @OA\Response(response=404, description="Resource Not Found"),
-     *   @OA\Response(response=422, description="Unprocessable Entity"),
-     *   @OA\Response(response=500, description="Server Error"),
-     *   security={{"passport": {}}},
-     * )
+     * Update a permission information.
      *
      * @param PermissionRequest  $request
-     * @param \Spatie\Permission\Models\Permission $permission
+     * @param Permission $permission
+     * @param UpdatePermission  $action
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(PermissionRequest $request, Permission $permission)
+    public function update(PermissionRequest $request, Permission $permission, UpdatePermission $action)
     {
         try {
-            $permission->update($request->validated());
+            $action->execute($permission, $request);
         } catch (Throwable $exception) {
             throw_if(is_development(), $exception);
 
             return $this->responseError('Error on update permission!');
         }
 
-        return $this->response(
+        return $this->responseOk(
             'Permission updated successfully!',
             new PermissionResource($permission)
         );
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a permission.
      *
-     * @OA\Delete(
-     *   path="/permissions/{id}",
-     *   tags={"Permission"},
-     *   operationId="permissionDestroy",
-     *   summary="Destroy permission",
-     *   description="Destroy permission",
-     *   @OA\Parameter(
-     *     name="id",
-     *     in="path",
-     *     description="Permission Id",
-     *     required=true,
-     *     @OA\Schema(type="integer")
-     *   ),
-     *   @OA\Response(response=200, description="Successful Operation"),
-     *   @OA\Response(response=404, description="Resource Not Found"),
-     *   @OA\Response(response=422, description="Unprocessable Entity"),
-     *   @OA\Response(response=500, description="Server Error"),
-     *   security={{"passport": {}}},
-     * )
-     *
-     * @param \Spatie\Permission\Models\Permission $permission
+     * @param Permission $permission
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -206,6 +103,6 @@ class PermissionController extends BaseApiController
             return $this->responseError('Error on delete permission!');
         }
 
-        return $this->response('Permission deleted successfully!');
+        return $this->responseOk('Permission deleted successfully!');
     }
 }

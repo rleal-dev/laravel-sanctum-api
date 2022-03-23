@@ -5,7 +5,7 @@ namespace App\Actions\Role;
 use App\Http\Requests\RoleRequest;
 use App\Models\Role;
 
-class Create
+class CreateRole
 {
     /**
      * Create a role

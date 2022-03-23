@@ -2,11 +2,11 @@
 
 namespace App\Actions\Auth;
 
+use App\Http\Requests\Auth\TokenPasswordRequest;
 use App\Mail\ResetPassword;
+use App\Models\{PasswordReset, User};
 use App\Services\AccessPin;
 use Illuminate\Support\Facades\Mail;
-use App\Models\{PasswordReset, User};
-use App\Http\Requests\Auth\TokenPasswordRequest;
 
 class SendPasswordToken
 {
