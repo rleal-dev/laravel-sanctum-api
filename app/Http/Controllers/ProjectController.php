@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Project\{CreateProject, UpdateProject};
+use App\Actions\Project\{CreateProject, DeleteProject, UpdateProject};
 use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\{ProjectCollection, ProjectResource};
 use App\Models\Project;
@@ -90,13 +90,14 @@ class ProjectController extends BaseController
      * Delete a project.
      *
      * @param Project $project
+     * @param DeleteProject $action
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Project $project)
+    public function destroy(Project $project, DeleteProject $action)
     {
         try {
-            $project->delete();
+            $action->execute($project);
         } catch (Throwable $exception) {
             throw_if(is_development(), $exception);
 

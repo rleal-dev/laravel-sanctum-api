@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Role\{CreateRole, UpdateRole};
+use App\Actions\Role\{CreateRole, DeleteRole, UpdateRole};
 use App\Http\Requests\RoleRequest;
 use App\Http\Resources\{RoleCollection, RoleResource};
 use App\Models\Role;
@@ -90,13 +90,14 @@ class RoleController extends BaseController
      * Delete a role.
      *
      * @param Role $role
+     * @param DeleteRole $action
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Role $role)
+    public function destroy(Role $role, DeleteRole $action)
     {
         try {
-            $role->delete();
+            $action->execute($role);
         } catch (Throwable $exception) {
             throw_if(is_development(), $exception);
 

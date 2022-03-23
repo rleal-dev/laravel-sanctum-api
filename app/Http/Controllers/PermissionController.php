@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Permission\{CreatePermission, UpdatePermission};
+use App\Actions\Permission\{CreatePermission, DeletePermission, UpdatePermission};
 use App\Http\Requests\PermissionRequest;
 use App\Http\Resources\{PermissionCollection, PermissionResource};
 use App\Models\Permission;
@@ -90,13 +90,14 @@ class PermissionController extends BaseController
      * Delete a permission.
      *
      * @param Permission $permission
+     * @param DeletePermission $action
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Permission $permission)
+    public function destroy(Permission $permission, DeletePermission $action)
     {
         try {
-            $permission->delete();
+            $action->execute($permission);
         } catch (Throwable $exception) {
             throw_if(is_development(), $exception);
 
