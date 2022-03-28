@@ -16,3 +16,4 @@ yarn-error.log
 .php-cs-fixer.php
 .php-cs-fixer.cache
 csfixer.sh
+.DS_Store

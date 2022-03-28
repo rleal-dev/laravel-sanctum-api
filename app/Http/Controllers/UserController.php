@@ -43,7 +43,7 @@ class UserController extends BaseController
             return $this->responseError('Error on create user!');
         }
 
-        return $this->responseCreateUserd(
+        return $this->responseCreated(
             'User created successfully!',
             new UserResource($user)
         );
